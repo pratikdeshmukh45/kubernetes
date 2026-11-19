@@ -1,0 +1,17 @@
+
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: nginx-loadbalancer
+
+spec:
+  type: LoadBalancer
+
+  selector:
+    app: nginx-day3
+
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
