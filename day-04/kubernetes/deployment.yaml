@@ -1,0 +1,51 @@
+
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: opspulse-api
+  labels:
+    app: opspulse-api
+
+spec:
+  replicas: 2
+
+  selector:
+    matchLabels:
+      app: opspulse-api
+
+  template:
+    metadata:
+      labels:
+        app: opspulse-api
+
+    spec:
+      containers:
+        - name: opspulse-api
+          image: opspulse-api:v1
+          imagePullPolicy: Never
+
+          ports:
+            - containerPort: 5000
+
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "64Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 5000
+            initialDelaySeconds: 10
+            periodSeconds: 15
+
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 5000
+            initialDelaySeconds: 5
+            periodSeconds: 5
